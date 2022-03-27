@@ -27,29 +27,25 @@ if nargin < 4
 end
 
 weights = zeros(size(data,2),1);
+len = size(data,1);
 iter = 1;
 
 while ((iter <= maxiter))
-    y = 1*(sigmoid(data * weights)>0.5);
-    R = diag( y .* (1 - y) );
-    
-%     % Add a little identity to R to prevent singularity
-%     a_little = 0.1;
-%     R = R + a_little * eye(length(R));
-    
+    y = sigmoid(data * weights);
+    y_old = 1*( y > 0.5);
     % Update the weight values
-    z = (data * weights) - (R^(-1) * (y - labels));
-    weights = (data' * R * data)^(-1) * data' * R * z;
-%     weights = weights - (data' * R * data)^(-1) * data' * (y - labels);
+    g = data' * (y - labels);
+    weights = weights -  1/len * g;
     
     % Compute the absolute difference between new predictions and old
     y_new = 1*(sigmoid(data * weights)>0.5);
-    diff = mean(abs(y_new - y));    
+    diff = mean(abs(y_new - y_old));    
     
     % Update the stopping condition control variables
     if diff < epsilon
         break;
     end
+
     iter = iter + 1;
     
 end
