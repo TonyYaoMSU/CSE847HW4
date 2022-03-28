@@ -32,13 +32,13 @@ iter = 1;
 
 while ((iter <= maxiter))
     y = sigmoid(data * weights);
-    y_old = 1*( y > 0.5);
+    y_old = y;
     % Update the weight values
     g = data' * (y - labels);
     weights = weights -  1/len * g;
     
     % Compute the absolute difference between new predictions and old
-    y_new = 1*(sigmoid(data * weights)>0.5);
+    y_new = sigmoid(data * weights);
     diff = mean(abs(y_new - y_old));    
     
     % Update the stopping condition control variables
