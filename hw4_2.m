@@ -28,9 +28,9 @@ for i = 1:numel(par)
     num_feats(i) = sum(weights ~= 0);
     
     % Compute the predicted values
-    predictions = 1*(sigmoid(data_train * weights + bias )> 0.5);
+    predictions = sigmoid(data_test * weights + bias);
 
-    [~,~,~,auc] = perfcurve(label_train, predictions,1);
+    [~,~,~,auc] = perfcurve(label_test, predictions,1);
     aucs(i) = auc;
 end
 
